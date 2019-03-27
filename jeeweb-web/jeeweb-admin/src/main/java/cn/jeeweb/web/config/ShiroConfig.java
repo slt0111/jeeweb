@@ -164,6 +164,8 @@ public class ShiroConfig {
         sessionManager.setSessionValidationSchedulerEnabled(true);
         sessionManager.setCacheManager(shiroCacheManager);
         sessionManager.setSessionIdCookieEnabled(true);
+        // 去掉shiro登录时url里的JSESSIONID
+        sessionManager.setSessionIdUrlRewritingEnabled(false);
         sessionManager.setSessionIdCookie(sessionIdCookie());
         return sessionManager;
     }
