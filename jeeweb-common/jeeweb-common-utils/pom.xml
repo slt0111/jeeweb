@@ -15,7 +15,7 @@
     <properties>
         <!-- 缓存 -->
         <ehcache.version>2.10.4</ehcache.version>
-        <jedis.version>2.8.1</jedis.version>
+        <jedis.version>2.9.0</jedis.version>
         <!-- 工具包 -->
         <guava.version>17.0</guava.version>
         <fastjson.version>1.2.15</fastjson.version>
