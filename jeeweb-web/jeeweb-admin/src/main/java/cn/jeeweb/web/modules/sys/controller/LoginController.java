@@ -1,5 +1,6 @@
 package cn.jeeweb.web.modules.sys.controller;
 
+import cn.jeeweb.common.utils.JedisUtils;
 import cn.jeeweb.web.security.shiro.credential.RetryLimitHashedCredentialsMatcher;
 import cn.jeeweb.web.security.shiro.exception.RepeatAuthenticationException;
 import cn.jeeweb.web.security.shiro.filter.authc.FormAuthenticationFilter;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -32,7 +34,8 @@ public class LoginController extends BaseController {
 		if (principal != null && !principal.isMobileLogin()) {
 			return new ModelAndView("redirect:/admin");
 		}
-		String useruame = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
+		String username = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_USERNAME_PARAM);
+		String password = WebUtils.getCleanParam(request, FormAuthenticationFilter.DEFAULT_PASSWORD_PARAM);
 		//boolean rememberMe = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_REMEMBER_ME_PARAM);
 	//	boolean mobile = WebUtils.isTrue(request, FormAuthenticationFilter.DEFAULT_MOBILE_PARAM);
 		String exception = (String) request.getAttribute(FormAuthenticationFilter.DEFAULT_ERROR_KEY_ATTRIBUTE_NAME);
@@ -40,7 +43,7 @@ public class LoginController extends BaseController {
 	//	useruame = "admin";
 		// 是否开启验证码
 		if (RepeatAuthenticationException.class.getName().equals(exception)
-				|| retryLimitHashedCredentialsMatcher.isShowCaptcha(useruame)) { // 重复认证异常加入验证码。
+				|| retryLimitHashedCredentialsMatcher.isShowCaptcha(username)) { // 重复认证异常加入验证码。
 			model.addAttribute("showCaptcha", "1");
 		} else {
 			model.addAttribute("showCaptcha", "0");
@@ -48,10 +51,11 @@ public class LoginController extends BaseController {
 
 		// 强制登陆跳转
 		if (ExcessiveAttemptsException.class.getName().equals(exception)
-				|| retryLimitHashedCredentialsMatcher.isForceLogin(useruame)) { // 重复认证异常加入验证码。
+				|| retryLimitHashedCredentialsMatcher.isForceLogin(username)) { // 重复认证异常加入验证码。
 			// model.addAttribute("showCaptcha", "1");
 		}
-
+//		JedisUtils.set("username",username,1000);
+//		JedisUtils.set("password",password,1000);
 		return new ModelAndView("modules/sys/login/login");
 	}
 
