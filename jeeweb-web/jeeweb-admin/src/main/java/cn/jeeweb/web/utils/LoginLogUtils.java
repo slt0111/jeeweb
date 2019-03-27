@@ -98,7 +98,7 @@ public class LoginLogUtils {
                 LoginLog loginLog = new LoginLog();
                 loginLog.setLoginName(username);
                 loginLog.setLoginIp(ip);
-                loginLog.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
+                //loginLog.setLoginLocation(AddressUtils.getRealAddressByIP(ip));
                 loginLog.setBrowser(browser);
                 loginLog.setOs(os);
                 loginLog.setMsg(message);
